@@ -5,6 +5,9 @@ const wss = new WebSocketServer({ port: 3000 });
 
 let currentLocation = {};
 wss.on("connection", (ws) => {
+  var id = setInterval(function () {
+    ws.send(JSON.stringify(new Date()), function () {});
+  }, 1000);
   // console.log("connection open, sending location", currentLocation);
   ws.send(JSON.stringify(currentLocation));
   // console.log("clients", wss.clients);
@@ -17,7 +20,10 @@ wss.on("connection", (ws) => {
     // let msg=JSON.parse(message);
     // wss.clients.forEach((client) => client.send(message));
   });
-
+  ws.on("close", function () {
+    console.log("websocket connection close");
+    clearInterval(id);
+  });
   // ws.send("something");
 });
 
