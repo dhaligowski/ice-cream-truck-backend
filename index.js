@@ -1,13 +1,13 @@
 // import { WebSocketServer } from "ws";
 const { WebSocketServer } = require("ws");
 // const WebSocket = require("ws");
-const wss = new WebSocketServer({ port: 3000 });
+const wss = new WebSocketServer({ port: process.env.PORT || 3000 });
 
 let currentLocation = {};
 wss.on("connection", (ws) => {
-  var id = setInterval(function () {
-    ws.send(JSON.stringify(currentLocation), function () {});
-  }, 1000);
+  // var id = setInterval(function () {
+  //   ws.send(JSON.stringify(currentLocation), function () {});
+  // }, 1000);
   // console.log("connection open, sending location", currentLocation);
   ws.send(JSON.stringify(currentLocation));
   // console.log("clients", wss.clients);
@@ -22,7 +22,7 @@ wss.on("connection", (ws) => {
   });
   ws.on("close", function () {
     console.log("websocket connection close");
-    clearInterval(id);
+    // clearInterval(id);
   });
   // ws.send("something");
 });
