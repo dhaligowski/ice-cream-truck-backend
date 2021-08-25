@@ -8,7 +8,7 @@ wss.on("connection", (ws) => {
   var id = setInterval(function () {
     // ws.send(JSON.stringify(currentLocation), function () {});
     ws.send("KeepSocketAlive", function () {});
-  }, 1000);
+  }, 30000);
   // console.log("connection open, sending location", currentLocation);
   ws.send(JSON.stringify(currentLocation));
   // console.log("clients", wss.clients);
