@@ -5,6 +5,7 @@ const wss = new WebSocketServer({ port: process.env.PORT || 3000 });
 
 let currentLocation = {};
 wss.on("connection", (ws) => {
+  console.log("websocket connection open");
   var id = setInterval(function () {
     // ws.send(JSON.stringify(currentLocation), function () {});
     ws.send("KeepSocketAlive", function () {});
