@@ -6,7 +6,7 @@ const wss = new WebSocketServer({ port: 3000 });
 let currentLocation = {};
 wss.on("connection", (ws) => {
   var id = setInterval(function () {
-    ws.send(JSON.stringify(new Date()), function () {});
+    ws.send(JSON.stringify(currentLocation), function () {});
   }, 1000);
   // console.log("connection open, sending location", currentLocation);
   ws.send(JSON.stringify(currentLocation));
