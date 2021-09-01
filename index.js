@@ -13,8 +13,7 @@ wss.on("connection", (ws) => {
     ws.send(JSON.stringify(driver), function () {
       if (ws === driverSocket) socketCounter++;
 
-      // console.log("socketCounter", socketCounter);
-
+      //reset server after 10min
       if (socketCounter === SOCKET_RESET_TIMER) {
         ws.send(JSON.stringify(false));
         socketCounter = 0;
@@ -47,9 +46,7 @@ wss.on("connection", (ws) => {
     }
   });
   ws.on("close", function () {
-    // console.log("websocket connection close");
     if (driverSocket === ws) {
-      // console.log("driver is logging out");
       driver = false;
       driverSocket = {};
       currentLocation = {};
