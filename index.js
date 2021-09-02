@@ -4,23 +4,28 @@ const wss = new WebSocketServer({ port: process.env.PORT || 3000 });
 let currentLocation = {};
 let driver = false;
 let driverSocket = {};
-let socketCounter = 0;
 const SOCKET_RESET_TIMER = 200;
+//const SOCKET_RESET_TIMER = 10;  for testing...
 const SEND_PING = 3000;
 
 wss.on("connection", (ws) => {
+  console.log("socket open");
+  let socketCounter = 0;
   var id = setInterval(function () {
     ws.send(JSON.stringify(driver), function () {
-      if (ws === driverSocket) socketCounter++;
-
-      //reset server after 10min
-      if (socketCounter === SOCKET_RESET_TIMER) {
-        ws.send(JSON.stringify(false));
-        socketCounter = 0;
-        driver = false;
-        driverSocket = {};
-        currentLocation = {};
-        ws.close();
+      if (ws === driverSocket) {
+        socketCounter++;
+        console.log("socketcounter", socketCounter);
+        //reset server after 10min
+        if (socketCounter === SOCKET_RESET_TIMER) {
+          ws.send(JSON.stringify(false));
+          socketCounter = 0;
+          driver = false;
+          driverSocket = {};
+          currentLocation = {};
+          console.log("timer closing connection");
+          // ws.close();
+        }
       }
     });
   }, SEND_PING);
@@ -51,7 +56,9 @@ wss.on("connection", (ws) => {
       driverSocket = {};
       currentLocation = {};
     }
+    console.log("connection closed");
     clearInterval(id);
+    // ws.close();
   });
 });
 
